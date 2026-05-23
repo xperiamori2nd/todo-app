@@ -1,17 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>TODO App</title>
+
 <link rel="stylesheet" href="style.css">
+
 <link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#00ffff">
 </head>
 
 <body>
 
+<div class="header">
+
 <h1>TODO App</h1>
 
+<div id="status">
+タスク 0 件
+</div>
+
+</div>
+
+<div id="list"></div>
+
+<button class="floating" id="openModal">
+＋
+</button>
+
+<div class="menu">
+<div>🏠</div>
+<div>📝</div>
+<div id="darkBtn">⚙️</div>
+</div>
+
+<div class="modal" id="modal">
+
+<div class="overlay" id="closeModal"></div>
+
+<div class="top">
+
+<input
+id="text"
+type="text"
+placeholder="入力"
+>
+
+<select id="category">
+
+<option>仕事</option>
+<option>買い物</option>
+<option>趣味</option>
+
+</select>
+
+<button id="addButton">
+追加
+</button>
+
+</div>
+
+</div>
+
 <script src="script.js"></script>
+
+<script>
+if("serviceWorker" in navigator){
+
+navigator.serviceWorker.register(
+"service-worker.js"
+);
+
+}
+</script>
 
 </body>
 </html>
