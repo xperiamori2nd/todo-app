@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  background: #06232c;
+  background: linear-gradient(180deg, #031d26, #01212c);
   color: white;
   font-family: sans-serif;
 }
@@ -16,68 +16,66 @@ h1 {
 }
 
 .top-bar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
   margin-bottom: 20px;
-}
-
-.task-count {
-  font-size: 20px;
-}
-
-.icon-buttons {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.icon-btn {
-  width: 50px;
-  height: 50px;
-  font-size: 28px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
+  font-size: 22px;
 }
 
 .input-area {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 20px;
 }
 
+input,
+select,
+button {
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  padding: 14px;
+}
+
 #taskInput {
   flex: 1;
-  padding: 12px;
-  font-size: 18px;
-  border-radius: 8px;
-  border: none;
+  min-width: 200px;
 }
 
-#categorySelect {
-  padding: 12px;
-  font-size: 18px;
-  border-radius: 8px;
-}
-
-#addButton {
-  padding: 12px 20px;
-  font-size: 18px;
-  border: none;
-  border-radius: 8px;
+button {
   cursor: pointer;
 }
 
-.task {
+#addButton {
+  background: #00b894;
+  color: white;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-buttons button {
   background: #103847;
-  padding: 15px;
-  border-radius: 12px;
-  margin-bottom: 12px;
+  color: white;
+}
+
+.task {
+  background: rgba(16, 56, 71, 0.9);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+  animation: fadeIn 0.3s ease;
 }
 
 .task.red {
   border: 2px solid red;
+}
+
+.task.completed {
+  opacity: 0.5;
+  text-decoration: line-through;
 }
 
 .task-header {
@@ -87,19 +85,62 @@ h1 {
 }
 
 .task-title {
-  font-size: 20px;
+  font-size: 22px;
+  font-weight: bold;
 }
 
 .task-category {
-  font-size: 14px;
   opacity: 0.7;
+}
+
+.task-date {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #ccc;
+}
+
+.task-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.complete-btn {
+  background: #0984e3;
+  color: white;
 }
 
 .delete-btn {
   background: red;
   color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+
+  h1 {
+    font-size: 42px;
+  }
+
+  .input-area {
+    flex-direction: column;
+  }
+
+  input,
+  select,
+  button {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
 }
