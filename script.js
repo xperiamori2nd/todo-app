@@ -1,149 +1,109 @@
 const taskInput = document.getElementById("taskInput");
-const deadlineInput = document.getElementById("deadlineInput");
-const categorySelect = document.getElementById("categorySelect");
-const addButton = document.getElementById("addButton");
+const categorySelect = document.getElementById("category");
+const dateInput = document.getElementById("date");
+const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
 const taskCount = document.getElementById("taskCount");
 
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-let currentFilter = "all";
-
-function saveTasks() {
+function saveTasks(){
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-function updateCount() {
-  taskCount.textContent = `タスク ${tasks.length} 件`;
-}
-
-function renderTasks() {
+function renderTasks(filter = "all"){
 
   taskList.innerHTML = "";
 
   let filteredTasks = tasks;
 
-  if (currentFilter === "active") {
-    filteredTasks = tasks.filter(task => !task.completed);
+  if(filter === "active"){
+    filteredTasks = tasks.filter(task => !task.done);
   }
 
-  if (currentFilter === "completed") {
-    filteredTasks = tasks.filter(task => task.completed);
+  if(filter === "done"){
+    filteredTasks = tasks.filter(task => task.done);
   }
+
+  taskCount.textContent = filteredTasks.length;
 
   filteredTasks.forEach((task, index) => {
 
-    const taskElement = document.createElement("div");
+    const div = document.createElement("div");
 
-    taskElement.classList.add("task");
+    div.className = "task-card";
 
-    if (task.completed) {
-      taskElement.classList.add("completed");
-    }
+    div.innerHTML = `
+      <div class="task-info">
 
-    const now = new Date();
-    const created = new Date(task.createdAt);
+        <h3 style="
+          ${task.done ? "text-decoration:line-through;opacity:0.5;" : ""}
+        ">
+          ${task.text}
+        </h3>
 
-    const diffDays =
-      (now - created) / (1000 * 60 * 60 * 24);
+        <p>${task.category}</p>
 
-    if (diffDays >= 1 && !task.completed) {
-      taskElement.classList.add("red");
-    }
+        <small>
+          📅 ${task.date || "期限なし"}
+        </small>
 
-    taskElement.innerHTML = `
-      <div class="task-header">
+      </div>
 
-        <div>
-          <div class="task-title">${task.text}</div>
+      <div class="task-buttons">
 
-          <div class="task-category">
-            ${task.category}
-          </div>
+        <button onclick="toggleTask(${index})">
+          ${task.done ? "戻す" : "完了"}
+        </button>
 
-          <div class="task-date">
-            締切: ${task.deadline || "なし"}
-          </div>
-        </div>
-
-        <div class="task-buttons">
-
-          <button
-            class="complete-btn"
-            onclick="toggleComplete(${index})">
-
-            ✓
-          </button>
-
-          <button
-            class="delete-btn"
-            onclick="deleteTask(${index})">
-
-            削除
-          </button>
-
-        </div>
+        <button onclick="deleteTask(${index})">
+          削除
+        </button>
 
       </div>
     `;
 
-    taskList.appendChild(taskElement);
+    taskList.appendChild(div);
 
   });
 
-  updateCount();
+  saveTasks();
 }
 
-function addTask() {
+function addTask(){
 
   const text = taskInput.value.trim();
 
-  if (text === "") return;
+  if(text === ""){
+    return;
+  }
 
-  const task = {
-    text: text,
-    category: categorySelect.value,
-    deadline: deadlineInput.value,
-    completed: false,
-    createdAt: new Date().toISOString()
-  };
-
-  tasks.push(task);
-
-  saveTasks();
-
-  renderTasks();
+  tasks.push({
+    text:text,
+    category:categorySelect.value,
+    date:dateInput.value,
+    done:false
+  });
 
   taskInput.value = "";
-  deadlineInput.value = "";
+
+  renderTasks();
 }
 
-function deleteTask(index) {
+function deleteTask(index){
 
   tasks.splice(index, 1);
 
-  saveTasks();
+  renderTasks();
+}
+
+function toggleTask(index){
+
+  tasks[index].done = !tasks[index].done;
 
   renderTasks();
 }
 
-function toggleComplete(index) {
-
-  tasks[index].completed =
-    !tasks[index].completed;
-
-  saveTasks();
-
-  renderTasks();
-}
-
-function filterTasks(type) {
-
-  currentFilter = type;
-
-  renderTasks();
-}
-
-addButton.addEventListener("click", addTask);
+addBtn.addEventListener("click", addTask);
 
 renderTasks();
