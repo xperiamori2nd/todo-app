@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
   <title>TODO App</title>
 
@@ -12,74 +11,133 @@
 
 <body>
 
-  <h1>TODO App</h1>
+  <div class="container">
 
-  <div id="task-count">タスク 0 件</div>
+    <h1>TODO App</h1>
 
-  <div class="input-area">
+    <p id="taskCount">タスク 0 件</p>
+
+
+    <!-- 入力エリア -->
 
     <input
       type="text"
-      id="task-input"
-      placeholder="タスクを入力">
+      id="taskInput"
+      placeholder="タスクを入力"
+    >
+
+
+    <!-- 日付 -->
 
     <input
       type="date"
-      id="task-date">
+      id="taskDate"
+    >
 
-    <select id="task-category">
-      <option>買い物</option>
-      <option>仕事</option>
-      <option>勉強</option>
-      <option>趣味</option>
+
+    <!-- カテゴリ -->
+
+    <select id="taskCategory">
+
+      <option value="買い物">
+        買い物
+      </option>
+
+      <option value="仕事">
+        仕事
+      </option>
+
+      <option value="勉強">
+        勉強
+      </option>
+
+      <option value="その他">
+        その他
+      </option>
+
     </select>
 
-    <select id="task-priority">
-      <option value="high">🔥 高</option>
-      <option value="medium">⚡ 中</option>
-      <option value="low">🌱 低</option>
+
+    <!-- 優先度 -->
+
+    <select id="taskPriority">
+
+      <option value="高">
+        🔥 高
+      </option>
+
+      <option value="中">
+        ⚡ 中
+      </option>
+
+      <option value="低">
+        🌱 低
+      </option>
+
     </select>
 
-    <button id="add-btn"
-      onclick="addTask()">
+
+    <!-- 追加ボタン -->
+
+    <button id="addBtn">
       追加
     </button>
 
-  </div>
 
-  <div class="progress-area">
 
-    <div class="progress-bar">
-      <div class="progress"
-        id="progress"></div>
+    <!-- 進捗バー -->
+
+    <div class="progress-area">
+
+      <div class="progress-bg">
+
+        <div id="progressBar"></div>
+
+      </div>
+
+      <p id="progressText">
+        0% 完了
+      </p>
+
     </div>
 
-    <div id="progress-text">
-      0% 完了
+
+
+    <!-- フィルター -->
+
+    <div class="filter-buttons">
+
+      <button
+        class="filter-btn"
+        data-filter="all"
+      >
+        全部
+      </button>
+
+      <button
+        class="filter-btn"
+        data-filter="active"
+      >
+        未完了
+      </button>
+
+      <button
+        class="filter-btn"
+        data-filter="completed"
+      >
+        完了
+      </button>
+
     </div>
 
-  </div>
 
-  <div class="filter-area">
 
-    <button class="filter-btn active"
-      onclick="filterTasks('all', this)">
-      全部
-    </button>
+    <!-- タスク一覧 -->
 
-    <button class="filter-btn"
-      onclick="filterTasks('active', this)">
-      未完了
-    </button>
+    <div id="taskList"></div>
 
-    <button class="filter-btn"
-      onclick="filterTasks('completed', this)">
-      完了
-    </button>
 
   </div>
-
-  <div id="task-list"></div>
 
   <script src="script.js"></script>
 
