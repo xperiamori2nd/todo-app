@@ -1,171 +1,231 @@
-const taskInput = document.getElementById("taskInput");
-const taskDate = document.getElementById("taskDate");
-const taskCategory = document.getElementById("taskCategory");
-const taskPriority = document.getElementById("taskPriority");
-const addBtn = document.getElementById("addBtn");
-const taskList = document.getElementById("taskList");
-const taskCount = document.getElementById("taskCount");
+let tasks = [];
 
-const filterAll = document.getElementById("filterAll");
-const filterActive = document.getElementById("filterActive");
-const filterDone = document.getElementById("filterDone");
-
-const progressText = document.getElementById("progressText");
-const progressBar = document.getElementById("progressBar");
-
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 let currentFilter = "all";
 
-renderTasks();
+function addTask(){
 
-addBtn.addEventListener("click", addTask);
+  const text =
+    document.getElementById(
+      "task-input"
+    ).value;
 
-filterAll.addEventListener("click", () => {
-  currentFilter = "all";
+  const date =
+    document.getElementById(
+      "task-date"
+    ).value;
+
+  const category =
+    document.getElementById(
+      "task-category"
+    ).value;
+
+  const priority =
+    document.getElementById(
+      "task-priority"
+    ).value;
+
+  if(text === ""){
+    return;
+  }
+
+  tasks.push({
+    text,
+    date,
+    category,
+    priority,
+    completed:false
+  });
+
+  document.getElementById(
+    "task-input"
+  ).value = "";
+
   renderTasks();
-});
-
-filterActive.addEventListener("click", () => {
-  currentFilter = "active";
-  renderTasks();
-});
-
-filterDone.addEventListener("click", () => {
-  currentFilter = "done";
-  renderTasks();
-});
-
-function addTask() {
-  const text = taskInput.value.trim();
-
-  if (text === "") return;
-
-  const task = {
-    id: Date.now(),
-    text: text,
-    date: taskDate.value || "日付なし",
-    category: taskCategory.value,
-    priority: taskPriority.value || "中",
-    completed: false
-  };
-
-  tasks.push(task);
-
-  saveTasks();
-  renderTasks();
-
-  taskInput.value = "";
 }
 
-function renderTasks() {
+function renderTasks(){
+
+  const taskList =
+    document.getElementById(
+      "task-list"
+    );
+
   taskList.innerHTML = "";
 
-  let filteredTasks = tasks;
+  let filtered = tasks;
 
-  if (currentFilter === "active") {
-    filteredTasks = tasks.filter(task => !task.completed);
+  if(currentFilter === "active"){
+    filtered = tasks.filter(
+      task => !task.completed
+    );
   }
 
-  if (currentFilter === "done") {
-    filteredTasks = tasks.filter(task => task.completed);
+  if(currentFilter === "completed"){
+    filtered = tasks.filter(
+      task => task.completed
+    );
   }
 
-  filteredTasks.forEach(task => {
-    // 古いデータ対応
-    if (!task.priority) {
-      task.priority = "中";
+  filtered.forEach((task,index)=>{
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      `task-item priority-${task.priority}`;
+
+    if(task.completed){
+      div.classList.add("completed");
     }
 
-    const li = document.createElement("li");
-    li.className = "task-item";
+    let priorityText = "";
 
-    if (task.completed) {
-      li.classList.add("completed");
+    if(task.priority === "high"){
+      priorityText = "🔥 高";
     }
 
-    // 優先度カラー
-    if (task.priority === "高") {
-      li.classList.add("high");
-    } else if (task.priority === "中") {
-      li.classList.add("medium");
-    } else {
-      li.classList.add("low");
+    if(task.priority === "medium"){
+      priorityText = "⚡ 中";
     }
 
-    li.innerHTML = `
-      <div class="task-info">
-        <h3>${task.text}</h3>
+    if(task.priority === "low"){
+      priorityText = "🌱 低";
+    }
 
-        <p>
-          ${task.category}
-          ・
-          ${task.priority}
-        </p>
+    div.innerHTML = `
+      <div class="task-left">
 
-        <span>📅 ${task.date}</span>
+        <div class="task-text">
+          ${task.text}
+        </div>
+
+        <div class="task-meta">
+
+          <div>
+            ${task.category}
+            ・
+            ${priorityText}
+          </div>
+
+          <div>
+            📅
+            ${task.date || "期限なし"}
+          </div>
+
+        </div>
+
       </div>
 
       <div class="task-buttons">
-        <button class="complete-btn">
+
+        <button
+          class="complete-btn"
+          onclick="toggleTask(${index})">
+
           ${task.completed ? "戻す" : "完了"}
+
         </button>
 
-        <button class="edit-btn">
+        <button
+          class="edit-btn"
+          onclick="editTask(${index})">
+
           編集
+
         </button>
 
-        <button class="delete-btn">
+        <button
+          class="delete-btn"
+          onclick="deleteTask(${index})">
+
           削除
+
         </button>
+
       </div>
     `;
 
-    // 完了ボタン
-    li.querySelector(".complete-btn").addEventListener("click", () => {
-      task.completed = !task.completed;
-      saveTasks();
-      renderTasks();
-    });
+    taskList.appendChild(div);
 
-    // 編集ボタン
-    li.querySelector(".edit-btn").addEventListener("click", () => {
-      const newText = prompt("タスク編集", task.text);
-
-      if (newText !== null && newText.trim() !== "") {
-        task.text = newText.trim();
-        saveTasks();
-        renderTasks();
-      }
-    });
-
-    // 削除ボタン
-    li.querySelector(".delete-btn").addEventListener("click", () => {
-      tasks = tasks.filter(t => t.id !== task.id);
-      saveTasks();
-      renderTasks();
-    });
-
-    taskList.appendChild(li);
   });
 
-  taskCount.textContent = tasks.length;
-
+  updateCount();
   updateProgress();
 }
 
-function updateProgress() {
-  const completedTasks = tasks.filter(task => task.completed).length;
+function deleteTask(index){
+
+  tasks.splice(index,1);
+
+  renderTasks();
+}
+
+function toggleTask(index){
+
+  tasks[index].completed =
+    !tasks[index].completed;
+
+  renderTasks();
+}
+
+function editTask(index){
+
+  const newText = prompt(
+    "編集",
+    tasks[index].text
+  );
+
+  if(newText){
+    tasks[index].text = newText;
+  }
+
+  renderTasks();
+}
+
+function updateCount(){
+
+  document.getElementById(
+    "task-count"
+  ).innerText =
+    `タスク ${tasks.length} 件`;
+}
+
+function updateProgress(){
+
+  const completed =
+    tasks.filter(
+      task => task.completed
+    ).length;
 
   const percent =
     tasks.length === 0
       ? 0
-      : Math.round((completedTasks / tasks.length) * 100);
+      : Math.round(
+          completed / tasks.length * 100
+        );
 
-  progressText.textContent = `${percent}% 完了`;
+  document.getElementById(
+    "progress"
+  ).style.width =
+    percent + "%";
 
-  progressBar.style.width = `${percent}%`;
+  document.getElementById(
+    "progress-text"
+  ).innerText =
+    `${percent}% 完了`;
 }
 
-function saveTasks() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
+function filterTasks(type,button){
+
+  currentFilter = type;
+
+  document
+    .querySelectorAll(".filter-btn")
+    .forEach(btn=>{
+      btn.classList.remove("active");
+    });
+
+  button.classList.add("active");
+
+  renderTasks();
 }
