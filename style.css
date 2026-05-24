@@ -1,146 +1,97 @@
-body {
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(180deg, #031d26, #01212c);
-  color: white;
-  font-family: sans-serif;
+body{
+  margin:0;
+  padding:0;
+  background:#001f29;
+  color:white;
+  font-family:sans-serif;
 }
 
-.container {
-  padding: 20px;
+.container{
+  padding:20px;
 }
 
-h1 {
-  font-size: 56px;
-  margin-bottom: 20px;
+h1{
+  font-size:70px;
+  margin-bottom:10px;
 }
 
-.top-bar {
-  margin-bottom: 20px;
-  font-size: 22px;
-}
-
-.input-area {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
+.count{
+  font-size:25px;
+  margin-bottom:20px;
 }
 
 input,
 select,
-button {
-  border: none;
-  border-radius: 12px;
-  font-size: 18px;
-  padding: 14px;
+button{
+  width:100%;
+  margin-bottom:15px;
+  padding:20px;
+  border:none;
+  border-radius:20px;
+  font-size:20px;
+  box-sizing:border-box;
 }
 
-#taskInput {
-  flex: 1;
-  min-width: 200px;
+#addBtn{
+  background:#00d1b2;
+  color:white;
+  font-size:24px;
 }
 
-button {
-  cursor: pointer;
+.filters{
+  display:flex;
+  gap:10px;
+  margin-bottom:20px;
 }
 
-#addButton {
-  background: #00b894;
-  color: white;
+.filters button{
+  background:#08384a;
+  color:white;
 }
 
-.filter-buttons {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+.task-card{
+  background:#08384a;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:20px;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-.filter-buttons button {
-  background: #103847;
-  color: white;
+.task-info h3{
+  margin:0;
+  font-size:28px;
 }
 
-.task {
-  background: rgba(16, 56, 71, 0.9);
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 14px;
-  animation: fadeIn 0.3s ease;
+.task-info p{
+  margin:5px 0;
+  color:#cccccc;
 }
 
-.task.red {
-  border: 2px solid red;
+.task-info small{
+  color:#aaaaaa;
 }
 
-.task.completed {
-  opacity: 0.5;
-  text-decoration: line-through;
+.task-buttons{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
 
-.task-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.task-buttons button{
+  width:120px;
+  padding:10px;
+  font-size:18px;
 }
 
-.task-title {
-  font-size: 22px;
-  font-weight: bold;
+.task-buttons button:first-child{
+  background:#00c853;
+  color:white;
 }
 
-.task-category {
-  opacity: 0.7;
-}
-
-.task-date {
-  margin-top: 8px;
-  font-size: 14px;
-  color: #ccc;
-}
-
-.task-buttons {
-  display: flex;
-  gap: 8px;
-}
-
-.complete-btn {
-  background: #0984e3;
-  color: white;
-}
-
-.delete-btn {
-  background: red;
-  color: white;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (max-width: 600px) {
-
-  h1 {
-    font-size: 42px;
-  }
-
-  .input-area {
-    flex-direction: column;
-  }
-
-  input,
-  select,
-  button {
-    width: 100%;
-    box-sizing: border-box;
-  }
-
+.task-buttons button:last-child{
+  background:red;
+  color:white;
 }
