@@ -49,6 +49,30 @@ button{
   color:white;
 }
 
+.progress-area{
+  margin-bottom:20px;
+}
+
+.progress-bar{
+  width:100%;
+  height:20px;
+  background:#08384a;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+#progress{
+  width:0%;
+  height:100%;
+  background:#00d1b2;
+  transition:0.3s;
+}
+
+#progressText{
+  text-align:center;
+  margin-top:10px;
+}
+
 .task-card{
   background:#08384a;
   border-radius:20px;
@@ -58,6 +82,18 @@ button{
   display:flex;
   justify-content:space-between;
   align-items:center;
+}
+
+.high{
+  border-left:10px solid red;
+}
+
+.middle{
+  border-left:10px solid orange;
+}
+
+.low{
+  border-left:10px solid green;
 }
 
 .task-info h3{
@@ -72,6 +108,12 @@ button{
 
 .task-info small{
   color:#aaaaaa;
+  font-size:18px;
+}
+
+.done{
+  text-decoration:line-through;
+  opacity:0.5;
 }
 
 .task-buttons{
@@ -82,16 +124,22 @@ button{
 
 .task-buttons button{
   width:120px;
-  padding:10px;
+  padding:12px;
   font-size:18px;
+  border-radius:15px;
 }
 
-.task-buttons button:first-child{
+.complete-btn{
   background:#00c853;
   color:white;
 }
 
-.task-buttons button:last-child{
+.edit-btn{
+  background:#2196f3;
+  color:white;
+}
+
+.delete-btn{
   background:red;
   color:white;
 }
