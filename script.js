@@ -1,14 +1,33 @@
-const taskInput = document.getElementById("taskInput");
-const categorySelect = document.getElementById("category");
-const dateInput = document.getElementById("date");
-const addBtn = document.getElementById("addBtn");
-const taskList = document.getElementById("taskList");
-const taskCount = document.getElementById("taskCount");
+const taskInput =
+document.getElementById("taskInput");
 
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+const categorySelect =
+document.getElementById("category");
+
+const dateInput =
+document.getElementById("date");
+
+const prioritySelect =
+document.getElementById("priority");
+
+const addBtn =
+document.getElementById("addBtn");
+
+const taskList =
+document.getElementById("taskList");
+
+const taskCount =
+document.getElementById("taskCount");
+
+let tasks =
+JSON.parse(localStorage.getItem("tasks")) || [];
 
 function saveTasks(){
-  localStorage.setItem("tasks", JSON.stringify(tasks));
+
+  localStorage.setItem(
+    "tasks",
+    JSON.stringify(tasks)
+  );
 }
 
 function renderTasks(filter = "all"){
@@ -18,45 +37,85 @@ function renderTasks(filter = "all"){
   let filteredTasks = tasks;
 
   if(filter === "active"){
-    filteredTasks = tasks.filter(task => !task.done);
+
+    filteredTasks =
+    tasks.filter(task => !task.done);
   }
 
   if(filter === "done"){
-    filteredTasks = tasks.filter(task => task.done);
+
+    filteredTasks =
+    tasks.filter(task => task.done);
   }
 
-  taskCount.textContent = filteredTasks.length;
+  taskCount.textContent =
+  filteredTasks.length;
 
   filteredTasks.forEach((task, index) => {
 
-    const div = document.createElement("div");
+    const div =
+    document.createElement("div");
 
-    div.className = "task-card";
+    let priorityClass = "";
+
+    if(task.priority === "高"){
+      priorityClass = "high";
+    }
+
+    if(task.priority === "中"){
+      priorityClass = "middle";
+    }
+
+    if(task.priority === "低"){
+      priorityClass = "low";
+    }
+
+    div.className =
+    `task-card ${priorityClass}`;
 
     div.innerHTML = `
+
       <div class="task-info">
 
-        <h3 style="
-          ${task.done ? "text-decoration:line-through;opacity:0.5;" : ""}
+        <h3 class="
+          ${task.done ? "done" : ""}
         ">
           ${task.text}
         </h3>
 
-        <p>${task.category}</p>
+        <p>
+          ${task.category}
+          ・
+          ${task.priority}
+        </p>
 
         <small>
-          📅 ${task.date || "期限なし"}
+          📅
+          ${task.date || "期限なし"}
         </small>
 
       </div>
 
       <div class="task-buttons">
 
-        <button onclick="toggleTask(${index})">
+        <button
+          class="complete-btn"
+          onclick="toggleTask(${index})"
+        >
           ${task.done ? "戻す" : "完了"}
         </button>
 
-        <button onclick="deleteTask(${index})">
+        <button
+          class="edit-btn"
+          onclick="editTask(${index})"
+        >
+          編集
+        </button>
+
+        <button
+          class="delete-btn"
+          onclick="deleteTask(${index})"
+        >
           削除
         </button>
 
@@ -67,21 +126,47 @@ function renderTasks(filter = "all"){
 
   });
 
+  const doneTasks =
+  tasks.filter(task => task.done).length;
+
+  const percent =
+  tasks.length === 0
+  ? 0
+  : Math.floor(
+      (doneTasks / tasks.length) * 100
+    );
+
+  document.getElementById("progress")
+  .style.width = percent + "%";
+
+  document.getElementById("progressText")
+  .textContent = percent + "% 完了";
+
   saveTasks();
 }
 
 function addTask(){
 
-  const text = taskInput.value.trim();
+  const text =
+  taskInput.value.trim();
 
   if(text === ""){
     return;
   }
 
   tasks.push({
+
     text:text,
-    category:categorySelect.value,
-    date:dateInput.value,
+
+    category:
+    categorySelect.value,
+
+    date:
+    dateInput.value,
+
+    priority:
+    prioritySelect.value,
+
     done:false
   });
 
@@ -99,11 +184,31 @@ function deleteTask(index){
 
 function toggleTask(index){
 
-  tasks[index].done = !tasks[index].done;
+  tasks[index].done =
+  !tasks[index].done;
 
   renderTasks();
 }
 
-addBtn.addEventListener("click", addTask);
+function editTask(index){
+
+  const newText = prompt(
+    "タスク編集",
+    tasks[index].text
+  );
+
+  if(newText !== null){
+
+    tasks[index].text =
+    newText;
+
+    renderTasks();
+  }
+}
+
+addBtn.addEventListener(
+  "click",
+  addTask
+);
 
 renderTasks();
