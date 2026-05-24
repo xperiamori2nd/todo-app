@@ -1,10 +1,10 @@
 {
   "name": "TODO App",
   "short_name": "TODO",
-  "start_url": "./",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0f2027",
-  "theme_color": "#00ffff",
+  "background_color": "#001f29",
+  "theme_color": "#001f29",
   "icons": [
     {
       "src": "icon.png",
