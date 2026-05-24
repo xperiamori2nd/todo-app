@@ -1,310 +1,225 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: sans-serif;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:sans-serif;
 }
 
-body {
-  background: linear-gradient(to bottom, #00151c, #003c46);
-  color: white;
-  min-height: 100vh;
-  padding: 24px;
+body{
+  background:linear-gradient(to bottom,#00141b,#003c46);
+  color:white;
+  min-height:100vh;
+  padding:24px;
 }
 
-/* タイトル */
-
-h1 {
-  font-size: 68px;
-  font-weight: bold;
-  margin-bottom: 16px;
+h1{
+  font-size:72px;
+  margin-bottom:12px;
 }
 
-#task-count {
-  font-size: 24px;
-  margin-bottom: 28px;
+#task-count{
+  font-size:24px;
+  margin-bottom:24px;
 }
 
-/* 入力エリア */
+/* 入力 */
 
-.input-area {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  margin-bottom: 20px;
+.input-area{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
 }
 
 input,
-select {
-  width: 100%;
-  padding: 22px;
-  border: none;
-  border-radius: 24px;
-  font-size: 22px;
-  background: #f1f1f1;
-  color: #111;
-}
-
-input::placeholder {
-  color: #777;
+select{
+  width:100%;
+  padding:22px;
+  border:none;
+  border-radius:24px;
+  font-size:22px;
+  background:#f1f1f1;
 }
 
 /* 追加ボタン */
 
-#add-btn {
-  border: none;
-  border-radius: 26px;
-  padding: 22px;
-  font-size: 28px;
-  font-weight: bold;
-  color: white;
+#add-btn{
+  border:none;
+  border-radius:24px;
+  padding:22px;
+  font-size:28px;
+  font-weight:bold;
+  color:white;
 
-  background: linear-gradient(90deg, #17d5c5, #22e2b3);
-
-  box-shadow:
-    0 0 20px rgba(0,255,200,0.35),
-    0 8px 20px rgba(0,0,0,0.3);
-
-  transition: 0.2s;
-}
-
-#add-btn:active {
-  transform: scale(0.97);
-}
-
-/* 進捗バー */
-
-.progress-area {
-  margin: 24px 0;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 18px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.progress {
-  height: 100%;
-  width: 0%;
-  border-radius: 999px;
-
-  background: linear-gradient(
+  background:linear-gradient(
     90deg,
-    #00ffb3,
-    #24d8ff
+    #15d8c6,
+    #24e5b2
   );
 
-  transition: 0.3s;
+  box-shadow:
+    0 0 20px rgba(0,255,200,0.3);
+
+  transition:0.2s;
 }
 
-#progress-text {
-  text-align: center;
-  margin-top: 10px;
-  font-size: 18px;
-  color: rgba(255,255,255,0.9);
+#add-btn:active{
+  transform:scale(0.97);
+}
+
+/* 進捗 */
+
+.progress-area{
+  margin:28px 0;
+}
+
+.progress-bar{
+  width:100%;
+  height:18px;
+  border-radius:999px;
+  overflow:hidden;
+  background:rgba(255,255,255,0.08);
+}
+
+.progress{
+  width:0%;
+  height:100%;
+
+  background:linear-gradient(
+    90deg,
+    #00ffb3,
+    #22d3ff
+  );
+
+  transition:0.3s;
+}
+
+#progress-text{
+  text-align:center;
+  margin-top:10px;
+  font-size:18px;
 }
 
 /* フィルター */
 
-.filter-area {
-  display: flex;
-  gap: 14px;
-  margin-bottom: 26px;
+.filter-area{
+  display:flex;
+  gap:14px;
+  margin-bottom:24px;
 }
 
-.filter-btn {
-  flex: 1;
-  border: none;
-  border-radius: 22px;
-  padding: 18px;
-  font-size: 20px;
-  color: white;
+.filter-btn{
+  flex:1;
 
-  background: rgba(255,255,255,0.08);
+  border:none;
+  border-radius:22px;
 
-  transition: 0.2s;
+  padding:18px;
+
+  font-size:22px;
+  color:white;
+
+  background:rgba(255,255,255,0.08);
 }
 
-.filter-btn.active {
-  background: linear-gradient(
+.filter-btn.active{
+  background:linear-gradient(
     90deg,
-    #18d7c5,
+    #15d8c6,
     #23d9ff
   );
-
-  box-shadow: 0 0 14px rgba(0,255,220,0.3);
 }
 
-/* タスクカード */
+/* タスク */
 
-.task-item {
-  background: rgba(255,255,255,0.08);
+.task-item{
+  background:rgba(255,255,255,0.08);
 
-  border-radius: 30px;
+  border-radius:30px;
 
-  padding: 22px;
+  padding:22px;
 
-  margin-bottom: 22px;
+  margin-bottom:22px;
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 18px;
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
 
   box-shadow:
-    0 8px 20px rgba(0,0,0,0.28);
-
-  transition: 0.25s;
+    0 8px 20px rgba(0,0,0,0.3);
 }
 
-.task-item:hover {
-  transform: translateY(-2px);
+.task-left{
+  flex:1;
 }
 
-/* 左側 */
-
-.task-left {
-  flex: 1;
-  min-width: 0;
+.task-text{
+  font-size:24px;
+  font-weight:bold;
+  margin-bottom:10px;
 }
 
-.task-text {
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 1.3;
-  word-break: break-word;
-}
+.task-meta{
+  color:rgba(255,255,255,0.75);
+  font-size:16px;
 
-/* メタ情報 */
-
-.task-meta {
-  margin-top: 10px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-
-  font-size: 15px;
-  color: rgba(255,255,255,0.72);
-}
-
-.task-category,
-.task-priority,
-.task-date {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
 }
 
 /* ボタン */
 
-.task-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.task-buttons{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
 
-.task-buttons button {
-  border: none;
-  border-radius: 18px;
+.task-buttons button{
+  border:none;
+  border-radius:18px;
 
-  padding: 10px 18px;
+  padding:12px 18px;
 
-  font-size: 17px;
-  font-weight: bold;
-  color: white;
+  min-width:100px;
 
-  min-width: 100px;
-
-  transition: 0.2s;
+  color:white;
+  font-size:18px;
+  font-weight:bold;
 }
 
-.task-buttons button:active {
-  transform: scale(0.95);
+.complete-btn{
+  background:#00dd55;
 }
 
-/* ボタン色 */
-
-.complete-btn {
-  background: linear-gradient(
-    90deg,
-    #00d94d,
-    #16ff77
-  );
+.edit-btn{
+  background:#2f9cff;
 }
 
-.edit-btn {
-  background: linear-gradient(
-    90deg,
-    #1f8fff,
-    #39b4ff
-  );
+.delete-btn{
+  background:#ff1f1f;
 }
 
-.delete-btn {
-  background: linear-gradient(
-    90deg,
-    #ff1a1a,
-    #ff3c3c
-  );
+/* 完了 */
+
+.completed{
+  opacity:0.6;
 }
 
-/* 完了済み */
-
-.completed {
-  opacity: 0.65;
+.completed .task-text{
+  text-decoration:line-through;
 }
 
-.completed .task-text {
-  text-decoration: line-through;
+/* 優先度 */
+
+.priority-high{
+  border-left:10px solid red;
 }
 
-/* 優先度ライン */
-
-.priority-high {
-  border-left: 10px solid #ff2b2b;
+.priority-medium{
+  border-left:10px solid orange;
 }
 
-.priority-medium {
-  border-left: 10px solid #ffb300;
-}
-
-.priority-low {
-  border-left: 10px solid #00d84a;
-}
-
-/* スマホ */
-
-@media (max-width: 600px) {
-
-  body {
-    padding: 18px;
-  }
-
-  h1 {
-    font-size: 58px;
-  }
-
-  .task-item {
-    padding: 20px;
-    gap: 14px;
-  }
-
-  .task-text {
-    font-size: 21px;
-  }
-
-  .task-buttons button {
-    min-width: 92px;
-    font-size: 16px;
-    padding: 10px 14px;
-  }
-
-  input,
-  select {
-    font-size: 20px;
-  }
+.priority-low{
+  border-left:10px solid lime;
 }
