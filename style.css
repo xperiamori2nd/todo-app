@@ -6,220 +6,267 @@
 }
 
 body{
-  background:linear-gradient(to bottom,#00141b,#003c46);
-  color:white;
+  background:
+  linear-gradient(
+    135deg,
+    #00141b,
+    #003c46
+  );
+
   min-height:100vh;
-  padding:24px;
+
+  color:white;
+
+  padding:20px;
 }
+
+.container{
+  max-width:700px;
+  margin:auto;
+}
+
+/* タイトル */
 
 h1{
-  font-size:72px;
-  margin-bottom:12px;
+  font-size:64px;
+  margin-bottom:10px;
+
+  text-shadow:
+  0 0 20px cyan;
 }
 
-#task-count{
-  font-size:24px;
-  margin-bottom:24px;
+#taskCount{
+  margin-bottom:20px;
+  font-size:22px;
 }
 
 /* 入力 */
 
-.input-area{
-  display:flex;
-  flex-direction:column;
-  gap:18px;
-}
-
 input,
 select{
   width:100%;
-  padding:22px;
+
+  padding:18px;
+
+  margin-bottom:15px;
+
   border:none;
-  border-radius:24px;
-  font-size:22px;
-  background:#f1f1f1;
+
+  border-radius:20px;
+
+  font-size:18px;
+
+  outline:none;
 }
 
 /* 追加ボタン */
 
-#add-btn{
+#addBtn{
+
+  width:100%;
+
+  padding:18px;
+
   border:none;
-  border-radius:24px;
-  padding:22px;
-  font-size:28px;
+
+  border-radius:20px;
+
+  font-size:24px;
+
   font-weight:bold;
+
   color:white;
 
-  background:linear-gradient(
+  background:
+  linear-gradient(
     90deg,
-    #15d8c6,
-    #24e5b2
+    #00d2ff,
+    #00ff95
   );
 
   box-shadow:
-    0 0 20px rgba(0,255,200,0.3);
+  0 0 20px
+  rgba(0,255,200,0.5);
+
+  margin-bottom:20px;
 
   transition:0.2s;
 }
 
-#add-btn:active{
+#addBtn:active{
   transform:scale(0.97);
 }
 
 /* 進捗 */
 
 .progress-area{
-  margin:28px 0;
+  margin-bottom:25px;
 }
 
-.progress-bar{
+.progress-bg{
+
   width:100%;
-  height:18px;
+
+  height:20px;
+
+  background:
+  rgba(255,255,255,0.15);
+
   border-radius:999px;
+
   overflow:hidden;
-  background:rgba(255,255,255,0.08);
 }
 
-.progress{
+#progressBar{
+
   width:0%;
+
   height:100%;
 
-  background:linear-gradient(
+  background:
+  linear-gradient(
     90deg,
-    #00ffb3,
-    #22d3ff
+    #00ff95,
+    #00d2ff
   );
 
   transition:0.3s;
 }
 
-#progress-text{
+#progressText{
+
   text-align:center;
+
   margin-top:10px;
+
   font-size:18px;
 }
 
 /* フィルター */
 
-.filter-area{
+.filter-buttons{
+
   display:flex;
-  gap:14px;
-  margin-bottom:24px;
+
+  gap:10px;
+
+  margin-bottom:20px;
 }
 
 .filter-btn{
+
   flex:1;
 
   border:none;
-  border-radius:22px;
 
-  padding:18px;
+  border-radius:18px;
 
-  font-size:22px;
+  padding:14px;
+
+  font-size:18px;
+
   color:white;
 
-  background:rgba(255,255,255,0.08);
+  background:
+  rgba(255,255,255,0.12);
+
+  transition:0.2s;
 }
 
-.filter-btn.active{
-  background:linear-gradient(
-    90deg,
-    #15d8c6,
-    #23d9ff
-  );
+.filter-btn:active{
+  transform:scale(0.96);
 }
 
 /* タスク */
 
-.task-item{
-  background:rgba(255,255,255,0.08);
-
-  border-radius:30px;
-
-  padding:22px;
-
-  margin-bottom:22px;
+.task-card{
 
   display:flex;
+
   justify-content:space-between;
-  gap:18px;
+
+  gap:15px;
+
+  background:
+  rgba(255,255,255,0.08);
+
+  padding:20px;
+
+  border-radius:24px;
+
+  margin-bottom:18px;
+
+  backdrop-filter:
+  blur(10px);
 
   box-shadow:
-    0 8px 20px rgba(0,0,0,0.3);
+  0 8px 25px
+  rgba(0,0,0,0.25);
 }
 
 .task-left{
   flex:1;
 }
 
-.task-text{
+.task-left h2{
+
   font-size:24px;
-  font-weight:bold;
+
   margin-bottom:10px;
+
+  word-break:break-word;
 }
 
-.task-meta{
-  color:rgba(255,255,255,0.75);
-  font-size:16px;
+.task-left p{
 
-  display:flex;
-  flex-direction:column;
-  gap:6px;
+  opacity:0.8;
+
+  margin-bottom:6px;
 }
 
 /* ボタン */
 
 .task-buttons{
+
   display:flex;
+
   flex-direction:column;
+
   gap:10px;
 }
 
 .task-buttons button{
+
   border:none;
-  border-radius:18px;
 
-  padding:12px 18px;
+  border-radius:14px;
 
-  min-width:100px;
+  padding:10px 14px;
 
   color:white;
-  font-size:18px;
+
+  font-size:16px;
+
   font-weight:bold;
 }
 
-.complete-btn{
-  background:#00dd55;
+.done-btn{
+  background:#00c853;
 }
 
 .edit-btn{
-  background:#2f9cff;
+  background:#2196f3;
 }
 
 .delete-btn{
-  background:#ff1f1f;
+  background:#ff1744;
 }
 
 /* 完了 */
 
-.completed{
-  opacity:0.6;
-}
+.completed-text{
 
-.completed .task-text{
   text-decoration:line-through;
-}
 
-/* 優先度 */
-
-.priority-high{
-  border-left:10px solid red;
-}
-
-.priority-medium{
-  border-left:10px solid orange;
-}
-
-.priority-low{
-  border-left:10px solid lime;
-}
+  opacity:0.5;
+    }
