@@ -6,67 +6,85 @@ const taskPriority = document.getElementById("taskPriority");
 const addBtn = document.getElementById("addBtn");
 
 const taskList = document.getElementById("taskList");
+
 const taskCount = document.getElementById("taskCount");
 
-const progressText = document.getElementById("progressText");
 const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
 
-const filterButtons = document.querySelectorAll(".filter-btn");
+const filterBtns = document.querySelectorAll(".filter-btn");
 
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let tasks = [];
+
 let currentFilter = "all";
 
 
-// 保存
-function saveTasks() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-}
 
+/* =========================
+   追加
+========================= */
 
-// 追加
-function addTask() {
+addBtn.addEventListener("click", () => {
 
   const text = taskInput.value.trim();
 
   if (text === "") {
-    alert("タスクを入力してください");
     return;
   }
 
-  const newTask = {
+  const task = {
+
     id: Date.now(),
+
     text: text,
-    date: taskDate.value || "",
+
+    date: taskDate.value || "期限なし",
+
     category: taskCategory.value,
+
     priority: taskPriority.value,
+
     completed: false
+
   };
 
-  // ← これ超重要
-  tasks.push(newTask);
-
-  saveTasks();
+  tasks.push(task);
 
   renderTasks();
 
   taskInput.value = "";
-}
+
+});
 
 
-// 表示
+
+/* =========================
+   描画
+========================= */
+
 function renderTasks() {
 
   taskList.innerHTML = "";
 
+
+
   let filteredTasks = tasks;
 
+
+
   if (currentFilter === "active") {
+
     filteredTasks = tasks.filter(task => !task.completed);
+
   }
 
   if (currentFilter === "completed") {
+
     filteredTasks = tasks.filter(task => task.completed);
+
   }
+
+
 
   filteredTasks.forEach(task => {
 
@@ -74,41 +92,58 @@ function renderTasks() {
 
     div.className = "task-card";
 
-    // 優先度カラー
-    if (task.priority === "高") {
-      div.classList.add("high");
-    }
+
+
+    let borderColor = "#00ff66";
 
     if (task.priority === "中") {
-      div.classList.add("medium");
+      borderColor = "#ffcc00";
     }
 
-    if (task.priority === "低") {
-      div.classList.add("low");
+    if (task.priority === "高") {
+      borderColor = "#ff0033";
     }
+
+
 
     div.innerHTML = `
 
-      <div class="task-left">
+      <div class="priority-line"
+        style="background:${borderColor}">
+      </div>
 
-        <h3 class="${task.completed ? "done" : ""}">
+      <div class="task-content">
+
+        <h2 class="${
+          task.completed ? "completed-text" : ""
+        }">
           ${task.text}
-        </h3>
+        </h2>
 
         <p>
           ${task.category} ・ ${task.priority}
         </p>
 
-        <span>
-          📅 ${task.date || "期限なし"}
-        </span>
+        <p>
+          📅 ${task.date}
+        </p>
 
       </div>
 
       <div class="task-buttons">
 
-        <button class="complete-btn">
-          ${task.completed ? "戻す" : "完了"}
+        <button class="done-btn">
+
+          ${
+            task.completed
+              ? "戻す"
+              : "完了"
+          }
+
+        </button>
+
+        <button class="edit-btn">
+          編集
         </button>
 
         <button class="delete-btn">
@@ -116,80 +151,135 @@ function renderTasks() {
         </button>
 
       </div>
+
     `;
 
-    // 完了ボタン
-    div.querySelector(".complete-btn").addEventListener("click", () => {
+
+
+    /* 完了 */
+
+    div.querySelector(".done-btn")
+      .addEventListener("click", () => {
 
       task.completed = !task.completed;
 
-      saveTasks();
-
       renderTasks();
+
     });
 
-    // 削除ボタン
-    div.querySelector(".delete-btn").addEventListener("click", () => {
 
-      tasks = tasks.filter(t => t.id !== task.id);
 
-      saveTasks();
+    /* 編集 */
+
+    div.querySelector(".edit-btn")
+      .addEventListener("click", () => {
+
+      const newText = prompt(
+        "タスク編集",
+        task.text
+      );
+
+      if (newText !== null) {
+
+        task.text = newText;
+
+        renderTasks();
+
+      }
+
+    });
+
+
+
+    /* 削除 */
+
+    div.querySelector(".delete-btn")
+      .addEventListener("click", () => {
+
+      tasks = tasks.filter(
+        t => t.id !== task.id
+      );
 
       renderTasks();
+
     });
+
+
 
     taskList.appendChild(div);
 
   });
 
+
+
   updateTaskCount();
 
   updateProgress();
+
 }
 
 
-// 件数
+
+/* =========================
+   件数
+========================= */
+
 function updateTaskCount() {
-  taskCount.textContent = tasks.length;
+
+  taskCount.textContent =
+    `タスク ${tasks.length} 件`;
+
 }
 
 
-// 進捗
+
+/* =========================
+   進捗
+========================= */
+
 function updateProgress() {
 
   if (tasks.length === 0) {
 
-    progressText.textContent = "0% 完了";
     progressBar.style.width = "0%";
 
+    progressText.textContent = "0% 完了";
+
     return;
+
   }
 
-  const completed = tasks.filter(task => task.completed).length;
+  const completed = tasks.filter(
+    task => task.completed
+  ).length;
 
-  const percent = Math.round((completed / tasks.length) * 100);
+  const percent = Math.floor(
+    completed / tasks.length * 100
+  );
 
-  progressText.textContent = `${percent}% 完了`;
+  progressBar.style.width =
+    percent + "%";
 
-  progressBar.style.width = `${percent}%`;
+  progressText.textContent =
+    percent + "% 完了";
+
 }
 
 
-// フィルター
-filterButtons.forEach(button => {
 
-  button.addEventListener("click", () => {
+/* =========================
+   フィルター
+========================= */
 
-    currentFilter = button.dataset.filter;
+filterBtns.forEach(btn => {
+
+  btn.addEventListener("click", () => {
+
+    currentFilter =
+      btn.dataset.filter;
 
     renderTasks();
+
   });
+
 });
-
-
-// ボタン
-addBtn.addEventListener("click", addTask);
-
-
-// 初回表示
-renderTasks();
