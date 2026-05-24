@@ -1,87 +1,100 @@
-const taskInput =
-document.getElementById("taskInput");
+const taskInput = document.getElementById("taskInput");
+const taskDate = document.getElementById("taskDate");
+const taskCategory = document.getElementById("taskCategory");
+const taskPriority = document.getElementById("taskPriority");
+const addBtn = document.getElementById("addBtn");
+const taskList = document.getElementById("taskList");
+const taskCount = document.getElementById("taskCount");
 
-const categorySelect =
-document.getElementById("category");
+const filterAll = document.getElementById("filterAll");
+const filterActive = document.getElementById("filterActive");
+const filterDone = document.getElementById("filterDone");
 
-const dateInput =
-document.getElementById("date");
+const progressText = document.getElementById("progressText");
+const progressBar = document.getElementById("progressBar");
 
-const prioritySelect =
-document.getElementById("priority");
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let currentFilter = "all";
 
-const addBtn =
-document.getElementById("addBtn");
+renderTasks();
 
-const taskList =
-document.getElementById("taskList");
+addBtn.addEventListener("click", addTask);
 
-const taskCount =
-document.getElementById("taskCount");
+filterAll.addEventListener("click", () => {
+  currentFilter = "all";
+  renderTasks();
+});
 
-let tasks =
-JSON.parse(localStorage.getItem("tasks")) || [];
+filterActive.addEventListener("click", () => {
+  currentFilter = "active";
+  renderTasks();
+});
 
-function saveTasks(){
+filterDone.addEventListener("click", () => {
+  currentFilter = "done";
+  renderTasks();
+});
 
-  localStorage.setItem(
-    "tasks",
-    JSON.stringify(tasks)
-  );
+function addTask() {
+  const text = taskInput.value.trim();
+
+  if (text === "") return;
+
+  const task = {
+    id: Date.now(),
+    text: text,
+    date: taskDate.value || "日付なし",
+    category: taskCategory.value,
+    priority: taskPriority.value || "中",
+    completed: false
+  };
+
+  tasks.push(task);
+
+  saveTasks();
+  renderTasks();
+
+  taskInput.value = "";
 }
 
-function renderTasks(filter = "all"){
-
+function renderTasks() {
   taskList.innerHTML = "";
 
   let filteredTasks = tasks;
 
-  if(filter === "active"){
-
-    filteredTasks =
-    tasks.filter(task => !task.done);
+  if (currentFilter === "active") {
+    filteredTasks = tasks.filter(task => !task.completed);
   }
 
-  if(filter === "done"){
-
-    filteredTasks =
-    tasks.filter(task => task.done);
+  if (currentFilter === "done") {
+    filteredTasks = tasks.filter(task => task.completed);
   }
 
-  taskCount.textContent =
-  filteredTasks.length;
-
-  filteredTasks.forEach((task, index) => {
-
-    const div =
-    document.createElement("div");
-
-    let priorityClass = "";
-
-    if(task.priority === "高"){
-      priorityClass = "high";
+  filteredTasks.forEach(task => {
+    // 古いデータ対応
+    if (!task.priority) {
+      task.priority = "中";
     }
 
-    if(task.priority === "中"){
-      priorityClass = "middle";
+    const li = document.createElement("li");
+    li.className = "task-item";
+
+    if (task.completed) {
+      li.classList.add("completed");
     }
 
-    if(task.priority === "低"){
-      priorityClass = "low";
+    // 優先度カラー
+    if (task.priority === "高") {
+      li.classList.add("high");
+    } else if (task.priority === "中") {
+      li.classList.add("medium");
+    } else {
+      li.classList.add("low");
     }
 
-    div.className =
-    `task-card ${priorityClass}`;
-
-    div.innerHTML = `
-
+    li.innerHTML = `
       <div class="task-info">
-
-        <h3 class="
-          ${task.done ? "done" : ""}
-        ">
-          ${task.text}
-        </h3>
+        <h3>${task.text}</h3>
 
         <p>
           ${task.category}
@@ -89,126 +102,70 @@ function renderTasks(filter = "all"){
           ${task.priority}
         </p>
 
-        <small>
-          📅
-          ${task.date || "期限なし"}
-        </small>
-
+        <span>📅 ${task.date}</span>
       </div>
 
       <div class="task-buttons">
-
-        <button
-          class="complete-btn"
-          onclick="toggleTask(${index})"
-        >
-          ${task.done ? "戻す" : "完了"}
+        <button class="complete-btn">
+          ${task.completed ? "戻す" : "完了"}
         </button>
 
-        <button
-          class="edit-btn"
-          onclick="editTask(${index})"
-        >
+        <button class="edit-btn">
           編集
         </button>
 
-        <button
-          class="delete-btn"
-          onclick="deleteTask(${index})"
-        >
+        <button class="delete-btn">
           削除
         </button>
-
       </div>
     `;
 
-    taskList.appendChild(div);
+    // 完了ボタン
+    li.querySelector(".complete-btn").addEventListener("click", () => {
+      task.completed = !task.completed;
+      saveTasks();
+      renderTasks();
+    });
 
+    // 編集ボタン
+    li.querySelector(".edit-btn").addEventListener("click", () => {
+      const newText = prompt("タスク編集", task.text);
+
+      if (newText !== null && newText.trim() !== "") {
+        task.text = newText.trim();
+        saveTasks();
+        renderTasks();
+      }
+    });
+
+    // 削除ボタン
+    li.querySelector(".delete-btn").addEventListener("click", () => {
+      tasks = tasks.filter(t => t.id !== task.id);
+      saveTasks();
+      renderTasks();
+    });
+
+    taskList.appendChild(li);
   });
 
-  const doneTasks =
-  tasks.filter(task => task.done).length;
+  taskCount.textContent = tasks.length;
+
+  updateProgress();
+}
+
+function updateProgress() {
+  const completedTasks = tasks.filter(task => task.completed).length;
 
   const percent =
-  tasks.length === 0
-  ? 0
-  : Math.floor(
-      (doneTasks / tasks.length) * 100
-    );
+    tasks.length === 0
+      ? 0
+      : Math.round((completedTasks / tasks.length) * 100);
 
-  document.getElementById("progress")
-  .style.width = percent + "%";
+  progressText.textContent = `${percent}% 完了`;
 
-  document.getElementById("progressText")
-  .textContent = percent + "% 完了";
-
-  saveTasks();
+  progressBar.style.width = `${percent}%`;
 }
 
-function addTask(){
-
-  const text =
-  taskInput.value.trim();
-
-  if(text === ""){
-    return;
-  }
-
-  tasks.push({
-
-    text:text,
-
-    category:
-    categorySelect.value,
-
-    date:
-    dateInput.value,
-
-    priority:
-    prioritySelect.value,
-
-    done:false
-  });
-
-  taskInput.value = "";
-
-  renderTasks();
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
-
-function deleteTask(index){
-
-  tasks.splice(index, 1);
-
-  renderTasks();
-}
-
-function toggleTask(index){
-
-  tasks[index].done =
-  !tasks[index].done;
-
-  renderTasks();
-}
-
-function editTask(index){
-
-  const newText = prompt(
-    "タスク編集",
-    tasks[index].text
-  );
-
-  if(newText !== null){
-
-    tasks[index].text =
-    newText;
-
-    renderTasks();
-  }
-}
-
-addBtn.addEventListener(
-  "click",
-  addTask
-);
-
-renderTasks();
