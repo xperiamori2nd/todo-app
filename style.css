@@ -270,3 +270,133 @@ select{
 
   opacity:0.5;
     }
+/* タスクカード */
+
+.task-card{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  gap:20px;
+
+  background:
+  rgba(255,255,255,0.08);
+
+  padding:20px;
+
+  border-radius:24px;
+
+  margin-bottom:20px;
+
+  backdrop-filter:blur(10px);
+
+  box-shadow:
+  0 8px 25px
+  rgba(0,0,0,0.25);
+}
+
+
+
+/* 左 */
+
+.task-left{
+  flex:1;
+}
+
+.task-left h2{
+
+  font-size:32px;
+
+  margin-bottom:10px;
+
+  word-break:break-word;
+}
+
+.task-left p{
+
+  opacity:0.8;
+
+  margin-bottom:5px;
+
+  font-size:20px;
+}
+
+
+
+/* 右ボタン */
+
+.task-buttons{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:12px;
+
+  width:140px;
+}
+
+.task-buttons button{
+
+  border:none;
+
+  border-radius:16px;
+
+  padding:14px;
+
+  color:white;
+
+  font-size:20px;
+
+  font-weight:bold;
+}
+
+
+
+/* 個別色 */
+
+.done-btn{
+  background:#00c853;
+}
+
+.edit-btn{
+  background:#2196f3;
+}
+
+.delete-btn{
+  background:#ff1744;
+}
+
+
+
+/* 完了文字 */
+
+.completed-text{
+
+  text-decoration:line-through;
+
+  opacity:0.5;
+}
+
+
+
+/* スマホ */
+
+@media(max-width:700px){
+
+  .task-card{
+
+    flex-direction:column;
+
+    align-items:stretch;
+  }
+
+  .task-buttons{
+
+    width:100%;
+  }
+
+}
