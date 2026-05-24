@@ -28,24 +28,15 @@ addBtn.addEventListener("click", () => {
 
   const text = taskInput.value.trim();
 
-  if (text === "") {
-    return;
-  }
+  if (text === "") return;
 
   const task = {
-
     id: Date.now(),
-
     text: text,
-
     date: taskDate.value || "期限なし",
-
     category: taskCategory.value,
-
     priority: taskPriority.value,
-
     completed: false
-
   };
 
   tasks.push(task);
@@ -66,22 +57,14 @@ function renderTasks() {
 
   taskList.innerHTML = "";
 
-
-
   let filteredTasks = tasks;
 
-
-
   if (currentFilter === "active") {
-
     filteredTasks = tasks.filter(task => !task.completed);
-
   }
 
   if (currentFilter === "completed") {
-
     filteredTasks = tasks.filter(task => task.completed);
-
   }
 
 
@@ -94,29 +77,11 @@ function renderTasks() {
 
 
 
-    let borderColor = "#00ff66";
-
-    if (task.priority === "中") {
-      borderColor = "#ffcc00";
-    }
-
-    if (task.priority === "高") {
-      borderColor = "#ff0033";
-    }
-
-
-
     div.innerHTML = `
 
-      <div class="priority-line"
-        style="background:${borderColor}">
-      </div>
+      <div class="task-left">
 
-      <div class="task-content">
-
-        <h2 class="${
-          task.completed ? "completed-text" : ""
-        }">
+        <h2 class="${task.completed ? "completed-text" : ""}">
           ${task.text}
         </h2>
 
@@ -133,13 +98,7 @@ function renderTasks() {
       <div class="task-buttons">
 
         <button class="done-btn">
-
-          ${
-            task.completed
-              ? "戻す"
-              : "完了"
-          }
-
+          ${task.completed ? "戻す" : "完了"}
         </button>
 
         <button class="edit-btn">
