@@ -1,231 +1,195 @@
-let tasks = [];
+const taskInput = document.getElementById("taskInput");
+const taskDate = document.getElementById("taskDate");
+const taskCategory = document.getElementById("taskCategory");
+const taskPriority = document.getElementById("taskPriority");
 
+const addBtn = document.getElementById("addBtn");
+
+const taskList = document.getElementById("taskList");
+const taskCount = document.getElementById("taskCount");
+
+const progressText = document.getElementById("progressText");
+const progressBar = document.getElementById("progressBar");
+
+const filterButtons = document.querySelectorAll(".filter-btn");
+
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 let currentFilter = "all";
 
-function addTask(){
 
-  const text =
-    document.getElementById(
-      "task-input"
-    ).value;
+// 保存
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
-  const date =
-    document.getElementById(
-      "task-date"
-    ).value;
 
-  const category =
-    document.getElementById(
-      "task-category"
-    ).value;
+// 追加
+function addTask() {
 
-  const priority =
-    document.getElementById(
-      "task-priority"
-    ).value;
+  const text = taskInput.value.trim();
 
-  if(text === ""){
+  if (text === "") {
+    alert("タスクを入力してください");
     return;
   }
 
-  tasks.push({
-    text,
-    date,
-    category,
-    priority,
-    completed:false
-  });
+  const newTask = {
+    id: Date.now(),
+    text: text,
+    date: taskDate.value || "",
+    category: taskCategory.value,
+    priority: taskPriority.value,
+    completed: false
+  };
 
-  document.getElementById(
-    "task-input"
-  ).value = "";
+  // ← これ超重要
+  tasks.push(newTask);
+
+  saveTasks();
 
   renderTasks();
+
+  taskInput.value = "";
 }
 
-function renderTasks(){
 
-  const taskList =
-    document.getElementById(
-      "task-list"
-    );
+// 表示
+function renderTasks() {
 
   taskList.innerHTML = "";
 
-  let filtered = tasks;
+  let filteredTasks = tasks;
 
-  if(currentFilter === "active"){
-    filtered = tasks.filter(
-      task => !task.completed
-    );
+  if (currentFilter === "active") {
+    filteredTasks = tasks.filter(task => !task.completed);
   }
 
-  if(currentFilter === "completed"){
-    filtered = tasks.filter(
-      task => task.completed
-    );
+  if (currentFilter === "completed") {
+    filteredTasks = tasks.filter(task => task.completed);
   }
 
-  filtered.forEach((task,index)=>{
+  filteredTasks.forEach(task => {
 
-    const div =
-      document.createElement("div");
+    const div = document.createElement("div");
 
-    div.className =
-      `task-item priority-${task.priority}`;
+    div.className = "task-card";
 
-    if(task.completed){
-      div.classList.add("completed");
+    // 優先度カラー
+    if (task.priority === "高") {
+      div.classList.add("high");
     }
 
-    let priorityText = "";
-
-    if(task.priority === "high"){
-      priorityText = "🔥 高";
+    if (task.priority === "中") {
+      div.classList.add("medium");
     }
 
-    if(task.priority === "medium"){
-      priorityText = "⚡ 中";
-    }
-
-    if(task.priority === "low"){
-      priorityText = "🌱 低";
+    if (task.priority === "低") {
+      div.classList.add("low");
     }
 
     div.innerHTML = `
+
       <div class="task-left">
 
-        <div class="task-text">
+        <h3 class="${task.completed ? "done" : ""}">
           ${task.text}
-        </div>
+        </h3>
 
-        <div class="task-meta">
+        <p>
+          ${task.category} ・ ${task.priority}
+        </p>
 
-          <div>
-            ${task.category}
-            ・
-            ${priorityText}
-          </div>
-
-          <div>
-            📅
-            ${task.date || "期限なし"}
-          </div>
-
-        </div>
+        <span>
+          📅 ${task.date || "期限なし"}
+        </span>
 
       </div>
 
       <div class="task-buttons">
 
-        <button
-          class="complete-btn"
-          onclick="toggleTask(${index})">
-
+        <button class="complete-btn">
           ${task.completed ? "戻す" : "完了"}
-
         </button>
 
-        <button
-          class="edit-btn"
-          onclick="editTask(${index})">
-
-          編集
-
-        </button>
-
-        <button
-          class="delete-btn"
-          onclick="deleteTask(${index})">
-
+        <button class="delete-btn">
           削除
-
         </button>
 
       </div>
     `;
 
+    // 完了ボタン
+    div.querySelector(".complete-btn").addEventListener("click", () => {
+
+      task.completed = !task.completed;
+
+      saveTasks();
+
+      renderTasks();
+    });
+
+    // 削除ボタン
+    div.querySelector(".delete-btn").addEventListener("click", () => {
+
+      tasks = tasks.filter(t => t.id !== task.id);
+
+      saveTasks();
+
+      renderTasks();
+    });
+
     taskList.appendChild(div);
 
   });
 
-  updateCount();
+  updateTaskCount();
+
   updateProgress();
 }
 
-function deleteTask(index){
 
-  tasks.splice(index,1);
-
-  renderTasks();
+// 件数
+function updateTaskCount() {
+  taskCount.textContent = tasks.length;
 }
 
-function toggleTask(index){
 
-  tasks[index].completed =
-    !tasks[index].completed;
+// 進捗
+function updateProgress() {
 
-  renderTasks();
-}
+  if (tasks.length === 0) {
 
-function editTask(index){
+    progressText.textContent = "0% 完了";
+    progressBar.style.width = "0%";
 
-  const newText = prompt(
-    "編集",
-    tasks[index].text
-  );
-
-  if(newText){
-    tasks[index].text = newText;
+    return;
   }
 
-  renderTasks();
+  const completed = tasks.filter(task => task.completed).length;
+
+  const percent = Math.round((completed / tasks.length) * 100);
+
+  progressText.textContent = `${percent}% 完了`;
+
+  progressBar.style.width = `${percent}%`;
 }
 
-function updateCount(){
 
-  document.getElementById(
-    "task-count"
-  ).innerText =
-    `タスク ${tasks.length} 件`;
-}
+// フィルター
+filterButtons.forEach(button => {
 
-function updateProgress(){
+  button.addEventListener("click", () => {
 
-  const completed =
-    tasks.filter(
-      task => task.completed
-    ).length;
+    currentFilter = button.dataset.filter;
 
-  const percent =
-    tasks.length === 0
-      ? 0
-      : Math.round(
-          completed / tasks.length * 100
-        );
+    renderTasks();
+  });
+});
 
-  document.getElementById(
-    "progress"
-  ).style.width =
-    percent + "%";
 
-  document.getElementById(
-    "progress-text"
-  ).innerText =
-    `${percent}% 完了`;
-}
+// ボタン
+addBtn.addEventListener("click", addTask);
 
-function filterTasks(type,button){
 
-  currentFilter = type;
-
-  document
-    .querySelectorAll(".filter-btn")
-    .forEach(btn=>{
-      btn.classList.remove("active");
-    });
-
-  button.classList.add("active");
-
-  renderTasks();
-}
+// 初回表示
+renderTasks();
