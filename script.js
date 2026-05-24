@@ -1,18 +1,34 @@
-const taskInput = document.getElementById("taskInput");
-const taskDate = document.getElementById("taskDate");
-const taskCategory = document.getElementById("taskCategory");
-const taskPriority = document.getElementById("taskPriority");
+const taskInput =
+document.getElementById("taskInput");
 
-const addBtn = document.getElementById("addBtn");
+const taskDate =
+document.getElementById("taskDate");
 
-const taskList = document.getElementById("taskList");
+const taskCategory =
+document.getElementById("taskCategory");
 
-const taskCount = document.getElementById("taskCount");
+const taskPriority =
+document.getElementById("taskPriority");
 
-const progressBar = document.getElementById("progressBar");
-const progressText = document.getElementById("progressText");
+const addBtn =
+document.getElementById("addBtn");
 
-const filterBtns = document.querySelectorAll(".filter-btn");
+const taskList =
+document.getElementById("taskList");
+
+const taskCount =
+document.getElementById("taskCount");
+
+const progressBar =
+document.getElementById("progressBar");
+
+const progressText =
+document.getElementById("progressText");
+
+const filterBtns =
+document.querySelectorAll(".filter-btn");
+
+
 
 let tasks = [];
 
@@ -20,58 +36,88 @@ let currentFilter = "all";
 
 
 
-/* =========================
+/* ======================
    追加
-========================= */
+====================== */
 
-addBtn.addEventListener("click", () => {
+addBtn.addEventListener("click",()=>{
 
-  const text = taskInput.value.trim();
+  const text =
+  taskInput.value.trim();
 
-  if (text === "") return;
+  if(text === ""){
+    return;
+  }
 
   const task = {
-    id: Date.now(),
-    text: text,
-    date: taskDate.value || "期限なし",
-    category: taskCategory.value,
-    priority: taskPriority.value,
-    completed: false
+
+    id:Date.now(),
+
+    text:text,
+
+    date:
+    taskDate.value || "期限なし",
+
+    category:
+    taskCategory.value,
+
+    priority:
+    taskPriority.value,
+
+    completed:false
+
   };
 
   tasks.push(task);
 
-  renderTasks();
-
   taskInput.value = "";
+
+  renderTasks();
 
 });
 
 
 
-/* =========================
+/* ======================
    描画
-========================= */
+====================== */
 
-function renderTasks() {
+function renderTasks(){
 
   taskList.innerHTML = "";
 
+
+
   let filteredTasks = tasks;
 
-  if (currentFilter === "active") {
-    filteredTasks = tasks.filter(task => !task.completed);
+
+
+  if(currentFilter === "active"){
+
+    filteredTasks =
+    tasks.filter(
+      task => !task.completed
+    );
+
   }
 
-  if (currentFilter === "completed") {
-    filteredTasks = tasks.filter(task => task.completed);
+
+
+  if(currentFilter === "completed"){
+
+    filteredTasks =
+    tasks.filter(
+      task => task.completed
+    );
+
   }
 
 
 
-  filteredTasks.forEach(task => {
+  filteredTasks.forEach(task=>{
 
-    const div = document.createElement("div");
+    const div =
+    document.createElement("div");
 
     div.className = "task-card";
 
@@ -81,12 +127,20 @@ function renderTasks() {
 
       <div class="task-left">
 
-        <h2 class="${task.completed ? "completed-text" : ""}">
+        <h2 class="${
+          task.completed
+          ? "completed-text"
+          : ""
+        }">
+
           ${task.text}
+
         </h2>
 
         <p>
-          ${task.category} ・ ${task.priority}
+          ${task.category}
+          ・
+          ${task.priority}
         </p>
 
         <p>
@@ -95,22 +149,37 @@ function renderTasks() {
 
       </div>
 
+
+
       <div class="task-buttons">
 
         <button class="done-btn">
-          ${task.completed ? "戻す" : "完了"}
+
+          ${
+            task.completed
+            ? "戻す"
+            : "完了"
+          }
+
         </button>
+
+
 
         <button class="edit-btn">
+
           編集
+
         </button>
 
+
+
         <button class="delete-btn">
+
           削除
+
         </button>
 
       </div>
-
     `;
 
 
@@ -118,9 +187,10 @@ function renderTasks() {
     /* 完了 */
 
     div.querySelector(".done-btn")
-      .addEventListener("click", () => {
+    .addEventListener("click",()=>{
 
-      task.completed = !task.completed;
+      task.completed =
+      !task.completed;
 
       renderTasks();
 
@@ -131,14 +201,15 @@ function renderTasks() {
     /* 編集 */
 
     div.querySelector(".edit-btn")
-      .addEventListener("click", () => {
+    .addEventListener("click",()=>{
 
-      const newText = prompt(
+      const newText =
+      prompt(
         "タスク編集",
         task.text
       );
 
-      if (newText !== null) {
+      if(newText !== null){
 
         task.text = newText;
 
@@ -153,9 +224,10 @@ function renderTasks() {
     /* 削除 */
 
     div.querySelector(".delete-btn")
-      .addEventListener("click", () => {
+    .addEventListener("click",()=>{
 
-      tasks = tasks.filter(
+      tasks =
+      tasks.filter(
         t => t.id !== task.id
       );
 
@@ -179,63 +251,82 @@ function renderTasks() {
 
 
 
-/* =========================
+/* ======================
    件数
-========================= */
+====================== */
 
-function updateTaskCount() {
+function updateTaskCount(){
 
   taskCount.textContent =
-    `タスク ${tasks.length} 件`;
+
+  `タスク ${tasks.length} 件`;
 
 }
 
 
 
-/* =========================
+/* ======================
    進捗
-========================= */
+====================== */
 
-function updateProgress() {
+function updateProgress(){
 
-  if (tasks.length === 0) {
+  if(tasks.length === 0){
 
-    progressBar.style.width = "0%";
+    progressBar.style.width =
+    "0%";
 
-    progressText.textContent = "0% 完了";
+    progressText.textContent =
+    "0% 完了";
 
     return;
 
   }
 
-  const completed = tasks.filter(
+
+
+  const completed =
+
+  tasks.filter(
     task => task.completed
   ).length;
 
+
+
   const percent = Math.floor(
-    completed / tasks.length * 100
+
+    completed /
+    tasks.length
+    * 100
+
   );
 
+
+
   progressBar.style.width =
-    percent + "%";
+
+  percent + "%";
+
+
 
   progressText.textContent =
-    percent + "% 完了";
+
+  percent + "% 完了";
 
 }
 
 
 
-/* =========================
+/* ======================
    フィルター
-========================= */
+====================== */
 
-filterBtns.forEach(btn => {
+filterBtns.forEach(btn=>{
 
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click",()=>{
 
     currentFilter =
-      btn.dataset.filter;
+    btn.dataset.filter;
 
     renderTasks();
 
