@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>TODO App</title>
 
   <link rel="stylesheet" href="style.css">
@@ -11,48 +12,47 @@
 
 <body>
 
-<div class="container">
+  <div class="container">
 
-  <h1>TODO App</h1>
+    <h1>TODO App</h1>
 
-  <div class="top-bar">
-    <div id="taskCount">タスク 0 件</div>
-  </div>
-
-  <div class="input-area">
+    <p class="count">
+      タスク <span id="taskCount">0</span> 件
+    </p>
 
     <input
       type="text"
       id="taskInput"
-      placeholder="タスクを入力">
+      placeholder="タスクを入力"
+    >
 
     <input
       type="date"
-      id="deadlineInput">
+      id="date"
+    >
 
-    <select id="categorySelect">
+    <select id="category">
       <option>買い物</option>
       <option>仕事</option>
       <option>勉強</option>
+      <option>その他</option>
     </select>
 
-    <button id="addButton">
+    <button id="addBtn">
       追加
     </button>
 
+    <div class="filters">
+      <button onclick="renderTasks('all')">全部</button>
+      <button onclick="renderTasks('active')">未完了</button>
+      <button onclick="renderTasks('done')">完了</button>
+    </div>
+
+    <div id="taskList"></div>
+
   </div>
 
-  <div class="filter-buttons">
-    <button onclick="filterTasks('all')">全部</button>
-    <button onclick="filterTasks('active')">未完了</button>
-    <button onclick="filterTasks('completed')">完了</button>
-  </div>
-
-  <div id="taskList"></div>
-
-</div>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 
 </body>
 </html>
