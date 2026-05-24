@@ -1,98 +1,85 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
 
   <title>TODO App</title>
 
-  <link
-    rel="stylesheet"
-    href="style.css"
-  >
-
-  <link
-    rel="manifest"
-    href="manifest.json"
-  >
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <div class="container">
+  <h1>TODO App</h1>
 
-    <h1>TODO App</h1>
+  <div id="task-count">タスク 0 件</div>
 
-    <p class="count">
-      タスク
-      <span id="taskCount">0</span>
-      件
-    </p>
+  <div class="input-area">
 
     <input
       type="text"
-      id="taskInput"
-      placeholder="タスクを入力"
-    >
+      id="task-input"
+      placeholder="タスクを入力">
 
     <input
       type="date"
-      id="date"
-    >
+      id="task-date">
 
-    <select id="category">
+    <select id="task-category">
       <option>買い物</option>
       <option>仕事</option>
       <option>勉強</option>
-      <option>その他</option>
+      <option>趣味</option>
     </select>
 
-    <select id="priority">
-      <option value="高">🔥 高</option>
-      <option value="中">⭐ 中</option>
-      <option value="低">🌱 低</option>
+    <select id="task-priority">
+      <option value="high">🔥 高</option>
+      <option value="medium">⚡ 中</option>
+      <option value="low">🌱 低</option>
     </select>
 
-    <button id="addBtn">
+    <button id="add-btn"
+      onclick="addTask()">
       追加
     </button>
 
-    <div class="progress-area">
+  </div>
 
-      <div class="progress-bar">
-        <div id="progress"></div>
-      </div>
+  <div class="progress-area">
 
-      <p id="progressText">
-        0% 完了
-      </p>
-
+    <div class="progress-bar">
+      <div class="progress"
+        id="progress"></div>
     </div>
 
-    <div class="filters">
-
-      <button onclick="renderTasks('all')">
-        全部
-      </button>
-
-      <button onclick="renderTasks('active')">
-        未完了
-      </button>
-
-      <button onclick="renderTasks('done')">
-        完了
-      </button>
-
+    <div id="progress-text">
+      0% 完了
     </div>
-
-    <div id="taskList"></div>
 
   </div>
+
+  <div class="filter-area">
+
+    <button class="filter-btn active"
+      onclick="filterTasks('all', this)">
+      全部
+    </button>
+
+    <button class="filter-btn"
+      onclick="filterTasks('active', this)">
+      未完了
+    </button>
+
+    <button class="filter-btn"
+      onclick="filterTasks('completed', this)">
+      完了
+    </button>
+
+  </div>
+
+  <div id="task-list"></div>
 
   <script src="script.js"></script>
 
