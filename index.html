@@ -1,13 +1,25 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>TODO App</title>
 
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
+  <link
+    rel="manifest"
+    href="manifest.json"
+  >
 </head>
 
 <body>
@@ -17,7 +29,9 @@
     <h1>TODO App</h1>
 
     <p class="count">
-      タスク <span id="taskCount">0</span> 件
+      タスク
+      <span id="taskCount">0</span>
+      件
     </p>
 
     <input
@@ -38,14 +52,42 @@
       <option>その他</option>
     </select>
 
+    <select id="priority">
+      <option value="高">🔥 高</option>
+      <option value="中">⭐ 中</option>
+      <option value="低">🌱 低</option>
+    </select>
+
     <button id="addBtn">
       追加
     </button>
 
+    <div class="progress-area">
+
+      <div class="progress-bar">
+        <div id="progress"></div>
+      </div>
+
+      <p id="progressText">
+        0% 完了
+      </p>
+
+    </div>
+
     <div class="filters">
-      <button onclick="renderTasks('all')">全部</button>
-      <button onclick="renderTasks('active')">未完了</button>
-      <button onclick="renderTasks('done')">完了</button>
+
+      <button onclick="renderTasks('all')">
+        全部
+      </button>
+
+      <button onclick="renderTasks('active')">
+        未完了
+      </button>
+
+      <button onclick="renderTasks('done')">
+        完了
+      </button>
+
     </div>
 
     <div id="taskList"></div>
